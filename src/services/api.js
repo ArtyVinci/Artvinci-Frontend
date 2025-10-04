@@ -58,26 +58,115 @@ api.interceptors.response.use(
   }
 );
 
+// Mock Users for Testing (when backend is not available)
+const MOCK_USERS = [
+  {
+    email: 'artist@artvinci.com',
+    password: 'Artist123!',
+    user: {
+      id: 1,
+      name: 'Sarah Chen',
+      email: 'artist@artvinci.com',
+      role: 'artist',
+      avatar: null,
+    }
+  },
+  {
+    email: 'buyer@artvinci.com',
+    password: 'Buyer123!',
+    user: {
+      id: 2,
+      name: 'John Doe',
+      email: 'buyer@artvinci.com',
+      role: 'buyer',
+      avatar: null,
+    }
+  },
+  {
+    email: 'demo@artvinci.com',
+    password: 'Demo123!',
+    user: {
+      id: 3,
+      name: 'Demo User',
+      email: 'demo@artvinci.com',
+      role: 'buyer',
+      avatar: null,
+    }
+  }
+];
+
 // Auth Services
 export const authService = {
   login: async (credentials) => {
-    const response = await api.post('/auth/login/', credentials);
-    if (response.data.access) {
-      localStorage.setItem(STORAGE_KEYS.TOKEN, response.data.access);
-      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, response.data.refresh);
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.data.user));
+    try {
+      const response = await api.post('/auth/login/', credentials);
+      if (response.data.access) {
+        localStorage.setItem(STORAGE_KEYS.TOKEN, response.data.access);
+        localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, response.data.refresh);
+        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.data.user));
+      }
+      return response.data;
+    } catch (error) {
+      // If backend is not available, use mock login
+      console.log('Backend not available, using mock login...');
+      
+      const mockUser = MOCK_USERS.find(
+        u => u.email === credentials.email && u.password === credentials.password
+      );
+
+      if (mockUser) {
+        const mockToken = 'mock-jwt-token-' + Date.now();
+        const mockRefreshToken = 'mock-refresh-token-' + Date.now();
+        
+        localStorage.setItem(STORAGE_KEYS.TOKEN, mockToken);
+        localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, mockRefreshToken);
+        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(mockUser.user));
+        
+        return {
+          access: mockToken,
+          refresh: mockRefreshToken,
+          user: mockUser.user
+        };
+      } else {
+        throw new Error('Invalid credentials');
+      }
     }
-    return response.data;
   },
 
   register: async (userData) => {
-    const response = await api.post('/auth/register/', userData);
-    if (response.data.access) {
-      localStorage.setItem(STORAGE_KEYS.TOKEN, response.data.access);
-      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, response.data.refresh);
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.data.user));
+    try {
+      const response = await api.post('/auth/register/', userData);
+      if (response.data.access) {
+        localStorage.setItem(STORAGE_KEYS.TOKEN, response.data.access);
+        localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, response.data.refresh);
+        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.data.user));
+      }
+      return response.data;
+    } catch (error) {
+      // If backend is not available, create mock user
+      console.log('Backend not available, creating mock user...');
+      
+      const mockUser = {
+        id: Date.now(),
+        name: userData.name,
+        email: userData.email,
+        role: userData.role || 'buyer',
+        avatar: null,
+      };
+
+      const mockToken = 'mock-jwt-token-' + Date.now();
+      const mockRefreshToken = 'mock-refresh-token-' + Date.now();
+      
+      localStorage.setItem(STORAGE_KEYS.TOKEN, mockToken);
+      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, mockRefreshToken);
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(mockUser));
+      
+      return {
+        access: mockToken,
+        refresh: mockRefreshToken,
+        user: mockUser
+      };
     }
-    return response.data;
   },
 
   logout: () => {

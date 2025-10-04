@@ -73,69 +73,83 @@ const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="flex items-center gap-2 p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="flex items-center gap-2 p-1 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 hover:scale-105"
                 >
-                  <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center text-white font-semibold">
-                    {user?.name?.charAt(0) || 'U'}
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md hover:shadow-lg transition-all duration-200 ring-2 ring-white dark:ring-gray-900">
+                    {user?.name?.charAt(0).toUpperCase() || 'U'}
                   </div>
                 </button>
 
                 {/* Profile Dropdown */}
                 {isProfileOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="absolute right-0 mt-2 w-64 glass dark:glass-dark rounded-2xl shadow-xl py-2 border border-white/20 dark:border-gray-700/50"
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    className="absolute right-0 mt-2 w-72 glass dark:glass-dark rounded-2xl shadow-2xl py-2 border border-purple-200 dark:border-purple-800/50 overflow-hidden"
                   >
-                    <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                        {user?.name}
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {user?.email}
-                      </p>
+                    <div className="px-5 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-white font-bold text-xl ring-2 ring-white/30">
+                          {user?.name?.charAt(0).toUpperCase() || 'U'}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-bold">
+                            {user?.name}
+                          </p>
+                          <p className="text-xs opacity-90">
+                            {user?.email}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 mt-3">
+                        <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-medium capitalize">
+                          {user?.role || 'User'}
+                        </span>
+                      </div>
                     </div>
 
-                    <Link
-                      to="/dashboard"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                      onClick={() => setIsProfileOpen(false)}
-                    >
-                      <User className="w-5 h-5" />
-                      <span>Dashboard</span>
-                    </Link>
+                    <div className="py-2">
+                      <Link
+                        to="/dashboard"
+                        className="flex items-center gap-3 px-5 py-3 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors text-gray-700 dark:text-gray-300 hover:text-purple-700 dark:hover:text-purple-400"
+                        onClick={() => setIsProfileOpen(false)}
+                      >
+                        <User className="w-5 h-5" />
+                        <span className="font-medium">Dashboard</span>
+                      </Link>
 
-                    <Link
-                      to="/dashboard/favorites"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                      onClick={() => setIsProfileOpen(false)}
-                    >
-                      <Heart className="w-5 h-5" />
-                      <span>Favorites</span>
-                    </Link>
+                      <Link
+                        to="/dashboard/favorites"
+                        className="flex items-center gap-3 px-5 py-3 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors text-gray-700 dark:text-gray-300 hover:text-purple-700 dark:hover:text-purple-400"
+                        onClick={() => setIsProfileOpen(false)}
+                      >
+                        <Heart className="w-5 h-5" />
+                        <span className="font-medium">Favorites</span>
+                      </Link>
 
-                    <Link
-                      to="/dashboard/purchases"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                      onClick={() => setIsProfileOpen(false)}
-                    >
-                      <ShoppingBag className="w-5 h-5" />
-                      <span>Purchases</span>
-                    </Link>
+                      <Link
+                        to="/dashboard/purchases"
+                        className="flex items-center gap-3 px-5 py-3 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors text-gray-700 dark:text-gray-300 hover:text-purple-700 dark:hover:text-purple-400"
+                        onClick={() => setIsProfileOpen(false)}
+                      >
+                        <ShoppingBag className="w-5 h-5" />
+                        <span className="font-medium">Purchases</span>
+                      </Link>
 
-                    <Link
-                      to="/dashboard/settings"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                      onClick={() => setIsProfileOpen(false)}
-                    >
-                      <Settings className="w-5 h-5" />
-                      <span>Settings</span>
-                    </Link>
+                      <Link
+                        to="/dashboard/settings"
+                        className="flex items-center gap-3 px-5 py-3 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors text-gray-700 dark:text-gray-300 hover:text-purple-700 dark:hover:text-purple-400"
+                        onClick={() => setIsProfileOpen(false)}
+                      >
+                        <Settings className="w-5 h-5" />
+                        <span className="font-medium">Settings</span>
+                      </Link>
+                    </div>
 
-                    <div className="border-t border-gray-200 dark:border-gray-700 mt-2 pt-2">
+                    <div className="border-t border-gray-200 dark:border-gray-700">
                       <button
                         onClick={handleLogout}
-                        className="flex items-center gap-3 px-4 py-3 w-full text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                        className="flex items-center gap-3 px-5 py-3 w-full text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors font-medium"
                       >
                         <LogOut className="w-5 h-5" />
                         <span>Logout</span>

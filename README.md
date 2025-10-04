@@ -37,7 +37,7 @@ A modern, elegant digital art gallery platform built with React 18, Vite, Tailwi
 
 ### Prerequisites
 - Node.js 16+ and npm
-- Django backend running on `http://localhost:8000` (optional for development)
+- Django backend running on `http://localhost:8000` (optional - mock data available)
 
 ### Setup
 
@@ -50,6 +50,30 @@ A modern, elegant digital art gallery platform built with React 18, Vite, Tailwi
    ```bash
    npm run dev
    ```
+
+3. **Access the app**
+   ```
+   Open http://localhost:5173
+   ```
+
+## 🔐 Test Login Credentials
+
+The app includes **mock authentication** for testing without a backend:
+
+### Quick Login:
+```
+Email: demo@artvinci.com
+Password: Demo123!
+```
+
+### Available Test Accounts:
+- **Artist**: `artist@artvinci.com` / `Artist123!`
+- **Buyer**: `buyer@artvinci.com` / `Buyer123!`
+- **Demo**: `demo@artvinci.com` / `Demo123!`
+
+📄 See [LOGIN_CREDENTIALS.md](./LOGIN_CREDENTIALS.md) for complete details.
+
+**Note**: Mock authentication works automatically when the backend is not available. You can also register new accounts through the signup form.
 
 3. **Open your browser**
    Navigate to `http://localhost:5173`
