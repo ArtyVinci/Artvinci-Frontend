@@ -28,26 +28,26 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-40 glass dark:glass-dark border-b border-white/20 dark:border-gray-700/50">
+    <nav className="sticky top-0 z-40 glass dark:glass-dark border-b border-white/20 dark:border-gray-700/50 backdrop-blur-xl">
       <div className="container-custom">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="p-2 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl group-hover:scale-110 transition-transform">
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="p-2.5 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl group-hover:scale-110 transition-all duration-300 shadow-lg shadow-primary-500/30">
               <Palette className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-display font-bold gradient-text">
+            <span className="text-2xl font-display font-bold gradient-text tracking-tight">
               Artvinci
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-2">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50"
               >
                 {link.name}
               </Link>

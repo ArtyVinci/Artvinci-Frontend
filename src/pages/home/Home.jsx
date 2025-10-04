@@ -36,40 +36,93 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 bg-pastel-gradient overflow-hidden">
-        <div className="container-custom relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
+      <section className="relative min-h-[90vh] flex items-center bg-pastel-gradient overflow-hidden">
+        <div className="container-custom relative z-10 py-20">
+          <div className="max-w-5xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6">
+              {/* Badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full mb-8 shadow-lg"
+              >
+                <Sparkles className="w-4 h-4 text-primary-600" />
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Join 10,000+ Artists & Collectors
+                </span>
+              </motion.div>
+
+              <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold mb-8 leading-tight">
                 Where Art Meets
-                <span className="block gradient-text">Technology</span>
+                <span className="block gradient-text mt-2">Technology</span>
               </h1>
-              <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto">
+              
+              <p className="text-xl md:text-2xl lg:text-3xl text-gray-700 dark:text-gray-300 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
                 Discover, collect, and celebrate extraordinary art from talented creators around the globe
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link to="/gallery">
-                  <Button size="lg" icon={Sparkles}>
+                  <Button 
+                    size="lg" 
+                    icon={Sparkles}
+                    className="text-lg px-8 py-4 shadow-2xl hover:shadow-primary-500/50 transition-all duration-300"
+                  >
                     Explore Gallery
                   </Button>
                 </Link>
                 <Link to="/signup">
-                  <Button variant="outline" size="lg" icon={Palette}>
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    icon={Palette}
+                    className="text-lg px-8 py-4 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white dark:hover:bg-gray-800 border-2"
+                  >
                     Join as Artist
                   </Button>
                 </Link>
               </div>
+
+              {/* Trust Indicators */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="mt-16 flex flex-wrap justify-center items-center gap-8 text-sm text-gray-600 dark:text-gray-400"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-secondary-400 border-2 border-white dark:border-gray-900"></div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-secondary-400 to-accent-400 border-2 border-white dark:border-gray-900"></div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent-400 to-primary-400 border-2 border-white dark:border-gray-900"></div>
+                  </div>
+                  <span className="font-medium">50K+ Artworks</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Users className="w-5 h-5 text-primary-500" />
+                  <span className="font-medium">150+ Countries</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-secondary-500" />
+                  <span className="font-medium">Trending Platform</span>
+                </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
 
-        {/* Decorative Elements */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-primary-300/30 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-secondary-300/30 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+        {/* Enhanced Decorative Elements */}
+        <div className="absolute top-1/4 left-10 w-64 h-64 bg-primary-400/20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute top-1/3 right-10 w-72 h-72 bg-secondary-400/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-1/4 left-1/3 w-48 h-48 bg-accent-400/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+        
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white dark:to-gray-900 pointer-events-none"></div>
       </section>
 
       {/* Features Section */}
