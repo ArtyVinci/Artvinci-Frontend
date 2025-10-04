@@ -69,16 +69,16 @@ const Gallery = () => {
     });
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-blue-50/30 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-16">
       <div className="container-custom">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-display font-bold gradient-text mb-4">
-            Art Gallery
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6">
+            <span className="gradient-text">Art Gallery</span>
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Explore our curated collection of stunning artworks from talented artists worldwide

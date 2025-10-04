@@ -105,8 +105,8 @@ const Signup = () => {
                 <Palette className="w-8 h-8 text-white" />
               </div>
             </Link>
-            <h2 className="text-3xl font-display font-bold gradient-text mb-2">
-              Join Artvinci
+            <h2 className="text-3xl font-display font-bold mb-2">
+              <span className="gradient-text">Join Artvinci</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
               Create your account and start your art journey
@@ -232,6 +232,7 @@ const Signup = () => {
               size="lg"
               icon={UserPlus}
               loading={loading}
+              className="font-semibold"
             >
               Create Account
             </Button>

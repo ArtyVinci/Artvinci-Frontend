@@ -47,8 +47,8 @@ const About = () => {
             <div className="inline-flex items-center gap-2 mb-6">
               <Palette className="w-12 h-12 text-primary-600" />
             </div>
-            <h1 className="text-5xl md:text-6xl font-display font-bold gradient-text mb-6">
-              About Artvinci
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6">
+              <span className="gradient-text">About Artvinci</span>
             </h1>
             <p className="text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
               We're on a mission to democratize art by creating a global platform that connects

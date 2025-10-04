@@ -57,8 +57,8 @@ const Home = () => {
                 </span>
               </motion.div>
 
-              <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold mb-8 leading-tight">
-                Where Art Meets
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold mb-8 leading-tight">
+                <span className="block text-gray-900 dark:text-white">Where Art Meets</span>
                 <span className="block gradient-text mt-2">Technology</span>
               </h1>
               
@@ -66,12 +66,13 @@ const Home = () => {
                 Discover, collect, and celebrate extraordinary art from talented creators around the globe
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <Link to="/gallery">
                   <Button 
                     size="lg" 
+                    variant="primary"
                     icon={Sparkles}
-                    className="text-lg px-8 py-4 shadow-2xl hover:shadow-primary-500/50 transition-all duration-300"
+                    className="min-w-[240px]"
                   >
                     Explore Gallery
                   </Button>
@@ -81,7 +82,7 @@ const Home = () => {
                     variant="outline" 
                     size="lg" 
                     icon={Palette}
-                    className="text-lg px-8 py-4 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white dark:hover:bg-gray-800 border-2"
+                    className="min-w-[240px]"
                   >
                     Join as Artist
                   </Button>
@@ -134,8 +135,8 @@ const Home = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold gradient-text mb-4">
-              Why Choose Artvinci?
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4">
+              <span className="gradient-text">Why Choose Artvinci?</span>
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Experience the perfect blend of creativity and technology in the digital art marketplace
@@ -150,10 +151,10 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="card-elegant p-8 text-center group hover:scale-105"
+                className="card-elegant p-8 text-center group hover:scale-[1.03] transition-all duration-300"
               >
-                <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform">
-                  <feature.icon className="w-8 h-8 text-white" />
+                <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-primary-500 via-purple-500 to-secondary-500 rounded-3xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg shadow-primary-500/30">
+                  <feature.icon className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
                   {feature.title}
@@ -176,8 +177,8 @@ const Home = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold gradient-text mb-4">
-              Featured Artists
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4">
+              <span className="gradient-text">Featured Artists</span>
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
               Meet some of our talented creators
@@ -227,27 +228,33 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary-600 to-secondary-600 text-white">
-        <div className="container-custom text-center">
+      <section className="relative py-24 bg-gradient-to-br from-primary-600 via-purple-600 to-secondary-600 text-white overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-20">
+          <div className="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-accent-400 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="container-custom text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6">
               Ready to Start Your Art Journey?
             </h2>
-            <p className="text-xl mb-10 max-w-2xl mx-auto opacity-90">
+            <p className="text-xl md:text-2xl mb-12 max-w-2xl mx-auto opacity-95 font-light">
               Join thousands of art lovers and creators on Artvinci today
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link to="/signup">
-                <Button size="lg" variant="secondary" className="bg-white text-primary-600 hover:bg-gray-100">
+                <Button size="lg" className="bg-white text-primary-700 hover:bg-gray-50 hover:shadow-2xl font-semibold min-w-[200px] border-0">
                   Get Started Free
                 </Button>
               </Link>
               <Link to="/about">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-primary-700 font-semibold min-w-[200px]">
                   Learn More
                 </Button>
               </Link>

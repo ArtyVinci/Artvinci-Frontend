@@ -9,15 +9,18 @@
   
   body {
     margin: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background: #ffffff;
     min-height: 100vh;
+    color: rgb(17, 24, 39);
+    line-height: 1.6;
   }
 
   body.dark {
     background: rgb(17, 24, 39);
+    color: rgb(243, 244, 246);
   }
 
   html {
@@ -26,6 +29,9 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
   }
 }
 
@@ -86,34 +92,43 @@
   .card-elegant {
     background-color: white;
     border-radius: 1.5rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(147, 51, 234, 0.1);
+    overflow: hidden;
+    position: relative;
   }
 
   .dark .card-elegant {
     background-color: rgb(31, 41, 55);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(147, 51, 234, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 4px rgba(0, 0, 0, 0.2);
   }
 
   .card-elegant:hover {
-    box-shadow: 0 20px 60px rgba(31, 38, 135, 0.2);
-    transform: translateY(-4px);
-    border-color: rgba(201, 22, 237, 0.2);
+    box-shadow: 0 20px 40px rgba(147, 51, 234, 0.15), 0 8px 16px rgba(59, 130, 246, 0.1);
+    transform: translateY(-8px);
+    border-color: rgba(147, 51, 234, 0.3);
   }
 
   .dark .card-elegant:hover {
-    border-color: rgba(201, 22, 237, 0.3);
+    border-color: rgba(147, 51, 234, 0.4);
+    box-shadow: 0 20px 40px rgba(147, 51, 234, 0.2), 0 8px 16px rgba(59, 130, 246, 0.15);
   }
 
   /* Gradient text */
   .gradient-text {
+    background: linear-gradient(135deg, 
+      rgb(147, 51, 234) 0%,
+      rgb(59, 130, 246) 50%,
+      rgb(249, 115, 22) 100%
+    );
     background-clip: text;
     -webkit-background-clip: text;
-    color: transparent;
-    background-image: linear-gradient(135deg, rgb(201, 22, 237), rgb(14, 165, 233), rgb(249, 115, 22));
-    background-size: 200% 200%;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
     animation: gradient-shift 8s ease infinite;
+    font-weight: 800;
   }
 
   @keyframes gradient-shift {

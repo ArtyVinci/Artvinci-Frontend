@@ -87,8 +87,8 @@ const Login = () => {
                 <Palette className="w-8 h-8 text-white" />
               </div>
             </Link>
-            <h2 className="text-3xl font-display font-bold gradient-text mb-2">
-              Welcome Back
+            <h2 className="text-3xl font-display font-bold mb-2">
+              <span className="gradient-text">Welcome Back</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
               Log in to your Artvinci account
@@ -158,6 +158,7 @@ const Login = () => {
               size="lg"
               icon={LogIn}
               loading={loading}
+              className="font-semibold"
             >
               Log In
             </Button>

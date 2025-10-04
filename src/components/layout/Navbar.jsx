@@ -33,10 +33,14 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="p-2.5 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl group-hover:scale-110 transition-all duration-300 shadow-lg shadow-primary-500/30">
-              <Palette className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-2xl font-display font-bold gradient-text tracking-tight">
+            <motion.div 
+              whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
+              transition={{ duration: 0.5 }}
+              className="p-3 bg-gradient-to-br from-primary-600 via-primary-500 to-secondary-600 rounded-2xl shadow-xl shadow-primary-500/50 group-hover:shadow-2xl group-hover:shadow-primary-500/60 transition-all duration-300"
+            >
+              <Palette className="w-7 h-7 text-white" />
+            </motion.div>
+            <span className="text-2xl font-display font-extrabold bg-gradient-to-r from-primary-600 via-primary-500 to-secondary-600 bg-clip-text text-transparent tracking-tight">
               Artvinci
             </span>
           </Link>
