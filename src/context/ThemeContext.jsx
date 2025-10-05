@@ -29,17 +29,20 @@ export const ThemeProvider = ({ children }) => {
 
   // Apply theme class to document
   useEffect(() => {
+    const root = document.documentElement;
     if (isDarkMode) {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
+      root.setAttribute('data-theme', 'dark');
       localStorage.setItem(STORAGE_KEYS.THEME, 'dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
+      root.setAttribute('data-theme', 'light');
       localStorage.setItem(STORAGE_KEYS.THEME, 'light');
     }
   }, [isDarkMode]);
 
   const toggleTheme = () => {
-    setIsDarkMode(prev => !prev);
+    setIsDarkMode((prev) => !prev);
   };
 
   const value = {

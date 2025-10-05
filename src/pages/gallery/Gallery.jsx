@@ -69,7 +69,7 @@ const Gallery = () => {
     });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-blue-50/30 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-16">
+    <div className="min-h-screen bg-gradient-to-br from-[#fafaf9] via-[#f5f5f3] to-[#e8e7e5] dark:from-[#1a1816] dark:via-[#2d2a27] dark:to-[#3a3633] py-16">
       <div className="container-custom">
         {/* Header */}
         <motion.div
@@ -78,9 +78,9 @@ const Gallery = () => {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6">
-            <span className="gradient-text">Art Gallery</span>
+            <span className="bg-gradient-to-r from-[#6d2842] via-[#8b3654] to-[#a64d6d] bg-clip-text text-transparent">Art Gallery</span>
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-[#5d5955] dark:text-[#c4bfb9] max-w-2xl mx-auto">
             Explore our curated collection of stunning artworks from talented artists worldwide
           </p>
         </motion.div>
