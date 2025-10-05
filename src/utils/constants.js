@@ -7,13 +7,14 @@ export const API_ENDPOINTS = {
   LOGIN: '/auth/login/',
   REGISTER: '/auth/register/',
   LOGOUT: '/auth/logout/',
-  REFRESH_TOKEN: '/auth/refresh/',
+  REFRESH_TOKEN: '/auth/token/refresh/',
+  PROFILE: '/auth/me/',
+  UPDATE_PROFILE: '/auth/me/update/',
   FORGOT_PASSWORD: '/auth/forgot-password/',
   RESET_PASSWORD: '/auth/reset-password/',
   
-  // User
-  USER_PROFILE: '/users/profile/',
-  UPDATE_PROFILE: '/users/profile/update/',
+  // User (Legacy - use Auth endpoints instead)
+  USER_PROFILE: '/auth/me/',
   
   // Artworks
   ARTWORKS: '/artworks/',

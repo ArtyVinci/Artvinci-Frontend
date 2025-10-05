@@ -35,9 +35,9 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-[#fafaf9] via-[#f5f5f3] to-[#e8e7e5] dark:from-[#1a1816] dark:via-[#2d2a27] dark:to-[#3a3633]">
       {/* Hero Section */}
-      <section className="py-20 lg:py-32 bg-pastel-gradient">
+      <section className="py-20 lg:py-32">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -45,12 +45,12 @@ const About = () => {
             className="max-w-4xl mx-auto text-center"
           >
             <div className="inline-flex items-center gap-2 mb-6">
-              <Palette className="w-12 h-12 text-primary-600" />
+              <Palette className="w-12 h-12 text-[#6d2842] dark:text-[#d4a343]" />
             </div>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6">
-              <span className="gradient-text">About Artvinci</span>
+              <span className="bg-gradient-to-r from-[#6d2842] via-[#8b3654] to-[#a64d6d] bg-clip-text text-transparent">About Artvinci</span>
             </h1>
-            <p className="text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
+            <p className="text-xl text-[#5d5955] dark:text-[#c4bfb9] max-w-2xl mx-auto">
               We're on a mission to democratize art by creating a global platform that connects
               talented artists with passionate collectors and art enthusiasts.
             </p>
@@ -59,7 +59,7 @@ const About = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-white dark:bg-[#2d2a27]">
         <div className="container-custom">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -71,10 +71,10 @@ const About = () => {
                 transition={{ delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">
+                <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#6d2842] via-[#8b3654] to-[#a64d6d] bg-clip-text text-transparent mb-2">
                   {stat.number}
                 </div>
-                <div className="text-gray-600 dark:text-gray-400 font-medium">
+                <div className="text-[#5d5955] dark:text-[#c4bfb9] font-medium">
                   {stat.label}
                 </div>
               </motion.div>
@@ -84,7 +84,7 @@ const About = () => {
       </section>
 
       {/* Story Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-[#f5f5f3] dark:bg-[#1a1816]">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -93,10 +93,10 @@ const About = () => {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl font-display font-bold gradient-text mb-6">
+              <h2 className="text-4xl font-display font-bold bg-gradient-to-r from-[#6d2842] via-[#8b3654] to-[#a64d6d] bg-clip-text text-transparent mb-6">
                 Our Story
               </h2>
-              <div className="space-y-4 text-lg text-gray-700 dark:text-gray-300 text-left">
+              <div className="space-y-4 text-lg text-[#5d5955] dark:text-[#c4bfb9] text-left">
                 <p>
                   Artvinci was born from a simple belief: art should be accessible to everyone, everywhere.
                   We saw talented artists struggling to reach their audience and art lovers searching for
@@ -120,7 +120,7 @@ const About = () => {
       </section>
 
       {/* Values Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-white dark:bg-[#2d2a27]">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -128,10 +128,10 @@ const About = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-display font-bold gradient-text mb-4">
+            <h2 className="text-4xl font-display font-bold bg-gradient-to-r from-[#6d2842] via-[#8b3654] to-[#a64d6d] bg-clip-text text-transparent mb-4">
               Our Values
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-[#5d5955] dark:text-[#c4bfb9] max-w-2xl mx-auto">
               The principles that guide everything we do
             </p>
           </motion.div>
@@ -144,15 +144,15 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="card-elegant p-8 text-center"
+                className="bg-white dark:bg-[#1a1816] border border-[#e8e7e5] dark:border-[#4a4642] rounded-3xl p-8 text-center hover:shadow-2xl hover:shadow-[#6d2842]/10 dark:hover:shadow-[#d4a343]/10 transition-all duration-300"
               >
-                <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-[#6d2842] to-[#a64d6d] rounded-2xl flex items-center justify-center">
                   <value.icon className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
+                <h3 className="text-xl font-semibold mb-3 text-[#2d2a27] dark:text-[#fafaf9]">
                   {value.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-[#5d5955] dark:text-[#c4bfb9]">
                   {value.description}
                 </p>
               </motion.div>
@@ -162,8 +162,14 @@ const About = () => {
       </section>
 
       {/* Mission Section */}
-      <section className="py-20 bg-gradient-to-br from-primary-600 to-secondary-600 text-white">
-        <div className="container-custom">
+      <section className="py-20 bg-gradient-to-br from-[#6d2842] via-[#8b3654] to-[#a64d6d] text-white relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-10">
+          <div className="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#d4a343] rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="container-custom relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -174,20 +180,28 @@ const About = () => {
             <h2 className="text-4xl font-display font-bold mb-6">
               Our Mission
             </h2>
-            <p className="text-xl mb-8 opacity-90">
+            <p className="text-xl mb-8 opacity-95">
               To empower artists worldwide by providing them with the tools, platform, and community
               they need to share their work, connect with audiences, and build sustainable creative careers.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/signup">
-                <Button size="lg" variant="secondary" className="bg-white text-primary-600 hover:bg-gray-100">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-white text-[#6d2842] hover:bg-[#fafaf9] hover:shadow-2xl font-semibold rounded-xl transition-all min-w-[200px]"
+                >
                   Join as Artist
-                </Button>
+                </motion.button>
               </Link>
               <Link to="/gallery">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 border-2 border-white text-white hover:bg-white hover:text-[#6d2842] font-semibold rounded-xl transition-all min-w-[200px]"
+                >
                   Explore Gallery
-                </Button>
+                </motion.button>
               </Link>
             </div>
           </motion.div>
