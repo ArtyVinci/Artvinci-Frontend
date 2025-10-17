@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Upload, X, Plus, ArrowLeft, Save, Image as ImageIcon } from 'lucide-react';
+import { Upload, X, Plus, ArrowLeft, Save, Image as ImageIcon, Sparkles } from 'lucide-react';
 import { eventService } from '../../services/api';
 import { showToast } from '../../services/toast';
 import { Button, Loading, LocationPicker } from '../../components/common';
@@ -16,6 +16,7 @@ const EventFormPage = () => {
   const [loading, setLoading] = useState(isEditing);
   const [submitting, setSubmitting] = useState(false);
   const [uploadingImages, setUploadingImages] = useState(false);
+  const [generatingAI, setGeneratingAI] = useState(false);
   const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
@@ -220,6 +221,42 @@ const EventFormPage = () => {
       ...prev,
       featured_artists: prev.featured_artists.filter(artist => artist !== artistToRemove)
     }));
+  };
+
+  const handleGenerateDescription = async () => {
+    if (!formData.title.trim()) {
+      showToast.error('Please enter an event title first');
+      return;
+    }
+
+    try {
+      setGeneratingAI(true);
+      showToast.info('🤖 Generating description with AI...');
+
+      const location = formData.location_city 
+        ? `${formData.location_city}${formData.location_country ? ', ' + formData.location_country : ''}`
+        : '';
+
+      const response = await eventService.generateEventDescription({
+        title: formData.title,
+        category: formData.category,
+        location: location,
+        additional_info: formData.short_description || ''
+      });
+
+      setFormData(prev => ({
+        ...prev,
+        description: response.description
+      }));
+
+      showToast.success('✨ Description generated successfully!');
+    } catch (error) {
+      console.error('Failed to generate description:', error);
+      const errorMsg = error.response?.data?.message || error.response?.data?.error || 'Failed to generate description';
+      showToast.error(errorMsg);
+    } finally {
+      setGeneratingAI(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -448,18 +485,35 @@ const EventFormPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-[#5d5955] dark:text-[#c4bfb9] mb-2">
-                    Full Description *
-                  </label>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium text-[#5d5955] dark:text-[#c4bfb9]">
+                      Full Description *
+                    </label>
+                    <button
+                      type="button"
+                      onClick={handleGenerateDescription}
+                      disabled={generatingAI || !formData.title.trim()}
+                      className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+                    >
+                      <Sparkles className="w-4 h-4" />
+                      {generatingAI ? 'Generating...' : 'Generate with AI'}
+                    </button>
+                  </div>
                   <textarea
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
                     required
                     rows="6"
-                    placeholder="Detailed description of your event..."
+                    placeholder="Detailed description of your event... (or click 'Generate with AI' above)"
                     className="w-full px-4 py-3 bg-[#f5f5f3] dark:bg-[#1a1816] border border-[#e8e7e5] dark:border-[#4a4642] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6d2842] dark:focus:ring-[#d4a343] text-[#2d2a27] dark:text-[#fafaf9]"
                   />
+                  {generatingAI && (
+                    <div className="mt-2 flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400">
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-purple-600 border-t-transparent"></div>
+                      <span>Gemini AI is crafting your description...</span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

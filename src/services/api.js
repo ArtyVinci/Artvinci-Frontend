@@ -614,6 +614,21 @@ export const eventService = {
       throw error;
     }
   },
+
+  /**
+   * Generate AI event description using Gemini
+   * @param {Object} data - { title, category, location, additional_info }
+   * @returns {Promise} Generated description
+   */
+  generateEventDescription: async (data) => {
+    try {
+      const response = await api.post('/events/ai/generate-description/', data);
+      return response.data;
+    } catch (error) {
+      console.error('Generate description failed:', error);
+      throw error;
+    }
+  },
 };
 
 export default api;
