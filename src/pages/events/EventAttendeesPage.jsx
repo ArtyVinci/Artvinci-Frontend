@@ -212,17 +212,17 @@ const EventAttendeesPage = () => {
                     <div className="flex items-start gap-4">
                       {/* Avatar */}
                       <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#6d2842] to-[#a64d6d] flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
-                        {attendee.attendee_name.charAt(0).toUpperCase()}
+                        {attendee.attendee_name ? attendee.attendee_name.charAt(0).toUpperCase() : attendee.user?.email?.charAt(0).toUpperCase() || '?'}
                       </div>
 
                       <div className="flex-1">
                         {/* Name & Email */}
                         <h3 className="text-xl font-bold text-[#2d2a27] dark:text-[#fafaf9] mb-1">
-                          {attendee.attendee_name}
+                          {attendee.attendee_name || 'Anonymous'}
                         </h3>
                         <div className="flex items-center gap-2 text-sm text-[#5d5955] dark:text-[#c4bfb9] mb-3">
                           <Mail className="w-4 h-4" />
-                          <span>{attendee.user.email}</span>
+                          <span>{attendee.user?.email || 'No email'}</span>
                         </div>
 
                         {/* Badges */}
