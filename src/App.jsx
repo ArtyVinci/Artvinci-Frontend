@@ -15,6 +15,10 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 import Gallery from './pages/gallery/Gallery';
 import Dashboard from './pages/dashboard/Dashboard';
+import EventsPage from './pages/events/EventsPage';
+import EventDetailPage from './pages/events/EventDetailPage';
+import EventFormPage from './pages/events/EventFormPage';
+import EventAttendeesPage from './pages/events/EventAttendeesPage';
 
 // Scroll to Top Component
 const ScrollToTop = () => {
@@ -74,6 +78,10 @@ function App() {
               <Route path="/store" element={<div className="container-custom py-20"><h1 className="text-4xl font-bold">Store Page - Coming Soon</h1></div>} />
               <Route path="/artists" element={<div className="container-custom py-20"><h1 className="text-4xl font-bold">Artists Page - Coming Soon</h1></div>} />
               
+              {/* Events Routes */}
+              <Route path="/events" element={<EventsPage />} />
+              <Route path="/events/:slug" element={<EventDetailPage />} />
+              
               {/* Auth Routes */}
               <Route
                 path="/login"
@@ -105,6 +113,32 @@ function App() {
                   <PublicRoute>
                     <ResetPassword />
                   </PublicRoute>
+                }
+              />
+
+              {/* Protected Event Routes */}
+              <Route
+                path="/events/create"
+                element={
+                  <ProtectedRoute>
+                    <EventFormPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/events/edit/:slug"
+                element={
+                  <ProtectedRoute>
+                    <EventFormPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/events/:slug/attendees"
+                element={
+                  <ProtectedRoute>
+                    <EventAttendeesPage />
+                  </ProtectedRoute>
                 }
               />
 

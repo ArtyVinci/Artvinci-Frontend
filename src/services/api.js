@@ -202,8 +202,9 @@ export const authService = {
   logout: async (refreshToken = null) => {
     try {
       // Try to blacklist the refresh token on the backend
+      // Note: Backend doesn't have logout endpoint yet, just clear locally
       if (refreshToken) {
-        await api.post('/auth/logout/', { refresh: refreshToken });
+        // await api.post('/accounts/token/blacklist/', { refresh: refreshToken });
       }
     } catch (error) {
       console.warn('Logout API call failed:', error.message);
@@ -436,6 +437,212 @@ export const dashboardService = {
   getPurchases: async () => {
     const response = await api.get('/dashboard/purchases/');
     return response.data;
+  },
+};
+
+// Event Services
+export const eventService = {
+  /**
+   * Get all published events with optional filters
+   * @param {Object} params - Query parameters (category, search, is_online, is_free, is_featured, time, sort)
+   * @returns {Promise} List of events
+   */
+  getEvents: async (params = {}) => {
+    try {
+      const response = await api.get('/events/', { params });
+      return response.data;
+    } catch (error) {
+      console.error('Get events failed:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get event details by slug
+   * @param {string} slug - Event slug
+   * @returns {Promise} Event details
+   */
+  getEventBySlug: async (slug) => {
+    try {
+      const response = await api.get(`/events/${slug}/`);
+      return response.data;
+    } catch (error) {
+      console.error('Get event failed:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Create new event (artists only)
+   * @param {Object} eventData - Event data
+   * @returns {Promise} Created event
+   */
+  createEvent: async (eventData) => {
+    try {
+      const response = await api.post('/events/', eventData);
+      return response.data;
+    } catch (error) {
+      console.error('Create event failed:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Update event (artist owner only)
+   * @param {string} slug - Event slug
+   * @param {Object} eventData - Updated event data
+   * @returns {Promise} Updated event
+   */
+  updateEvent: async (slug, eventData) => {
+    try {
+      const response = await api.patch(`/events/${slug}/`, eventData);
+      return response.data;
+    } catch (error) {
+      console.error('Update event failed:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Delete event (artist owner only)
+   * @param {string} slug - Event slug
+   * @returns {Promise}
+   */
+  deleteEvent: async (slug) => {
+    try {
+      const response = await api.delete(`/events/${slug}/`);
+      return response.data;
+    } catch (error) {
+      console.error('Delete event failed:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Upload images to event
+   * @param {string} slug - Event slug
+   * @param {FormData} formData - FormData with images
+   * @returns {Promise} Upload result
+   */
+  uploadEventImages: async (slug, formData) => {
+    try {
+      const response = await api.post(`/events/${slug}/upload-images/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Upload event images failed:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get events created by the authenticated user
+   * @param {Object} params - Query parameters (status)
+   * @returns {Promise} List of user's events
+   */
+  getMyEvents: async (params = {}) => {
+    try {
+      const response = await api.get('/events/my-events/', { params });
+      return response.data;
+    } catch (error) {
+      console.error('Get my events failed:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Subscribe to an event
+   * @param {string} slug - Event slug
+   * @param {Object} subscriptionData - Subscription data (attendee_notes, special_requirements)
+   * @returns {Promise} Subscription details
+   */
+  subscribeToEvent: async (slug, subscriptionData = {}) => {
+    try {
+      const response = await api.post(`/events/${slug}/subscribe/`, subscriptionData);
+      return response.data;
+    } catch (error) {
+      console.error('Subscribe to event failed:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Unsubscribe from an event
+   * @param {string} slug - Event slug
+   * @returns {Promise}
+   */
+  unsubscribeFromEvent: async (slug) => {
+    try {
+      const response = await api.delete(`/events/${slug}/unsubscribe/`);
+      return response.data;
+    } catch (error) {
+      console.error('Unsubscribe from event failed:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get user's event subscriptions
+   * @param {Object} params - Query parameters (status)
+   * @returns {Promise} List of subscriptions
+   */
+  getMySubscriptions: async (params = {}) => {
+    try {
+      const response = await api.get('/events/subscriptions/my-subscriptions/', { params });
+      return response.data;
+    } catch (error) {
+      console.error('Get my subscriptions failed:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get attendees for an event (artist owner only)
+   * @param {string} slug - Event slug
+   * @param {Object} params - Query parameters (status)
+   * @returns {Promise} List of attendees
+   */
+  getEventAttendees: async (slug, params = {}) => {
+    try {
+      const response = await api.get(`/events/${slug}/attendees/`, { params });
+      return response.data;
+    } catch (error) {
+      console.error('Get event attendees failed:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Generate AI event description using Gemini
+   * @param {Object} data - { title, category, location, additional_info }
+   * @returns {Promise} Generated description
+   */
+  generateEventDescription: async (data) => {
+    try {
+      const response = await api.post('/events/ai/generate-description/', data);
+      return response.data;
+    } catch (error) {
+      console.error('Generate description failed:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Send message to AI chatbot
+   * @param {Object} data - { message, context }
+   * @returns {Promise} Chatbot response with text and events
+   */
+  sendChatbotMessage: async (data) => {
+    try {
+      const response = await api.post('/events/ai/chatbot/', data);
+      return response.data;
+    } catch (error) {
+      console.error('Chatbot message failed:', error);
+      throw error;
+    }
   },
 };
 
