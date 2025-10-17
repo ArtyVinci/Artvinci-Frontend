@@ -629,6 +629,21 @@ export const eventService = {
       throw error;
     }
   },
+
+  /**
+   * Send message to AI chatbot
+   * @param {Object} data - { message, context }
+   * @returns {Promise} Chatbot response with text and events
+   */
+  sendChatbotMessage: async (data) => {
+    try {
+      const response = await api.post('/events/ai/chatbot/', data);
+      return response.data;
+    } catch (error) {
+      console.error('Chatbot message failed:', error);
+      throw error;
+    }
+  },
 };
 
 export default api;
