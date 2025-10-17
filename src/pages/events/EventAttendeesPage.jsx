@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -18,14 +18,11 @@ const EventAttendeesPage = () => {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('all');
 
-  useEffect(() => {
-    fetchAttendees();
-  }, [slug, statusFilter]);
-
-  const fetchAttendees = async () => {
+  const fetchAttendees = useCallback(async () => {
     try {
       setLoading(true);
       const data = await eventService.getEventAttendees(slug, statusFilter !== 'all' ? statusFilter : undefined);
+      console.log('👥 Attendees data:', data);
       setEvent({
         title: data.event_title,
         total_attendees: data.total_attendees,
@@ -34,6 +31,7 @@ const EventAttendeesPage = () => {
       setAttendees(data.attendees);
     } catch (error) {
       console.error('Failed to fetch attendees:', error);
+      console.error('Error details:', error.response?.data);
       showToast.error('Failed to load attendees');
       // If forbidden, redirect back to event page
       if (error.response?.status === 403) {
@@ -42,7 +40,11 @@ const EventAttendeesPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [slug, statusFilter, navigate]);
+
+  useEffect(() => {
+    fetchAttendees();
+  }, [fetchAttendees]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

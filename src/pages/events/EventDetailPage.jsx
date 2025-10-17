@@ -113,6 +113,19 @@ const EventDetailPage = () => {
   const isOwner = user && event && user.id === event.artist.id;
   const canSubscribe = isAuthenticated && !isOwner && event?.registration_open && !event?.is_subscribed;
 
+  // Debug subscription state
+  useEffect(() => {
+    if (event) {
+      console.log('🔍 Subscription Debug:');
+      console.log('- isAuthenticated:', isAuthenticated);
+      console.log('- isOwner:', isOwner);
+      console.log('- registration_open:', event.registration_open);
+      console.log('- is_subscribed:', event.is_subscribed);
+      console.log('- canSubscribe:', canSubscribe);
+      console.log('- registration_deadline:', event.registration_deadline);
+    }
+  }, [event, isAuthenticated, isOwner, canSubscribe]);
+
   if (loading) {
     return <Loading />;
   }
@@ -242,6 +255,18 @@ const EventDetailPage = () => {
                   >
                     Subscribe to Event
                   </Button>
+                )}
+
+                {/* Registration Closed Message */}
+                {isAuthenticated && !isOwner && !event.is_subscribed && !event.registration_open && (
+                  <div className="min-w-[200px] p-4 bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-700 rounded-xl">
+                    <p className="text-sm font-semibold text-yellow-800 dark:text-yellow-400 text-center">
+                      Registration Closed
+                    </p>
+                    <p className="text-xs text-yellow-700 dark:text-yellow-500 text-center mt-1">
+                      {event.is_sold_out ? 'Event is sold out' : 'Deadline has passed'}
+                    </p>
+                  </div>
                 )}
 
                 {event.is_subscribed && !isOwner && (
