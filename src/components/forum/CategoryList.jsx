@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Tag } from 'lucide-react';
+import { isTestCategory } from '../../utils/categoryTypes';
 
 const item = {
   hidden: { opacity: 0, x: -8 },
@@ -30,7 +31,7 @@ export default function CategoryList({ categories = [], loading, onSelect, selec
           </div>
         </motion.button>
 
-        {categories.map((c, idx) => (
+        {categories.filter(c => !isTestCategory(c)).map((c, idx) => (
           <motion.button
             key={c.id}
             initial="hidden"
@@ -45,6 +46,7 @@ export default function CategoryList({ categories = [], loading, onSelect, selec
               <div className="flex-1 text-left">
                 <div className="text-sm font-medium">{c.name}</div>
                 {c.description ? <div className="text-xs text-gray-400 mt-1">{c.description}</div> : null}
+                {c.type ? <div className="text-xs text-gray-500 mt-1 uppercase font-medium">{c.type}</div> : null}
               </div>
             </div>
           </motion.button>

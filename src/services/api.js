@@ -829,6 +829,16 @@ export const forumService = {
     }
   },
 
+  updateTopic: async (topicId, payload) => {
+    try {
+      const resp = await api.patch(`/forum/topics/${topicId}/`, payload);
+      return resp.data;
+    } catch (err) {
+      console.error('Update topic failed:', err);
+      throw err;
+    }
+  },
+
   getTopic: async (id) => {
     try {
       const resp = await api.get(`/forum/topics/${id}/`);
@@ -839,12 +849,32 @@ export const forumService = {
     }
   },
 
+  deleteTopic: async (topicId) => {
+    try {
+      const resp = await api.delete(`/forum/topics/${topicId}/`);
+      return resp.data;
+    } catch (err) {
+      console.error('Delete topic failed:', err);
+      throw err;
+    }
+  },
+
   createReply: async (topicId, payload) => {
     try {
       const resp = await api.post(`/forum/topics/${topicId}/replies/`, payload);
       return resp.data;
     } catch (err) {
       console.error('Create reply failed:', err);
+      throw err;
+    }
+  },
+
+  suggestReply: async (topicId, payload = {}) => {
+    try {
+      const resp = await api.post(`/forum/topics/${topicId}/suggest-reply/`, payload);
+      return resp.data;
+    } catch (err) {
+      console.error('Suggest reply failed:', err);
       throw err;
     }
   },
