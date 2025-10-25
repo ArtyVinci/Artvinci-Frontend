@@ -9,6 +9,8 @@ import { useAuth } from './hooks/useAuth';
 // Pages
 import Home from './pages/home/Home';
 import About from './pages/home/About';
+import ForumPage from './pages/forum/ForumPage';
+import TopicDetailPage from './pages/forum/TopicDetailPage';
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 import ForgotPassword from './pages/auth/ForgotPassword';
@@ -141,6 +143,10 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              {/* Forum Routes */}
+              <Route path="/forum" element={<ForumPage />} />
+              <Route path="/forum/:id" element={<TopicDetailPage />} />
 
               {/* Protected Routes */}
               <Route
