@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+
 import { Camera, Save, User, Mail, FileText, X, AlertCircle, Edit2, Loader, Palette, Briefcase, CheckCircle2, Scan, Upload, Shield } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import showToast from '../../services/toast';
 import { SimpleFaceCapture } from '../../components/common';
 import api from '../../services/api';
+
 
 const Profile = () => {
   const { user, updateProfile, refreshUserProfile } = useAuth();
@@ -512,6 +514,8 @@ const Profile = () => {
       )}
     </motion.div>
     
+      </motion.div>
+    </motion.div>
   );
 };
 

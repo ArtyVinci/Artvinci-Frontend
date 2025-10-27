@@ -22,6 +22,8 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Gallery', path: '/gallery' },
+    { name: 'Events', path: '/events' },
+    { name: 'Forum', path: '/forum' },
     { name: 'Store', path: '/store' },
     { name: 'Artists', path: '/artists' },
     { name: 'About', path: '/about' },
@@ -162,6 +164,17 @@ const Navbar = () => {
                         <Settings className="w-5 h-5" />
                         <span className="font-medium">Settings</span>
                       </Link>
+                      {/* Manage Forum - visible to admin or artist roles */}
+                      {(user?.role === 'admin' || user?.role === 'artist') && (
+                        <Link
+                          to="/forum/manage"
+                          className="flex items-center gap-3 px-5 py-3 hover:bg-[#f5f5f3] dark:hover:bg-[#1a1816] transition-colors text-[#5d5955] dark:text-[#c4bfb9] hover:text-[#6d2842] dark:hover:text-[#d4a343]"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <Settings className="w-5 h-5" />
+                          <span className="font-medium">Manage Forum</span>
+                        </Link>
+                      )}
                     </div>
 
                     <div className="border-t border-[#e8e7e5] dark:border-[#4a4642]">

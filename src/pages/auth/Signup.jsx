@@ -8,11 +8,13 @@ import { ELEGANT_STYLES } from '../../utils/elegantTheme';
 import { OTPModal } from '../../components/common';
 import { authService } from '../../services/api';
 import showToast from '../../services/toast';
+
 import api from '../../services/api';
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { register, authenticateWithTokens, loading: authLoading } = useAuth();
+  const { register, authenticateUser, loading: authLoading } = useAuth();
+
   
   const [formData, setFormData] = useState({
     username: '',
@@ -240,7 +242,9 @@ const Signup = () => {
         // Clear pending verification from localStorage
         localStorage.removeItem('pendingVerificationEmail');
         
-        authenticateWithTokens(result.user, result.tokens);
+
+        authenticateUser(result.user, result.tokens);
+
         showToast.success('Email verified successfully! Welcome to Artvinci.');
       }
       

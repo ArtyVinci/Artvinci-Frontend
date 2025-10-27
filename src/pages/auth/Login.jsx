@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+
 import { Mail, Lock, LogIn, Palette, Eye, EyeOff, AlertCircle, Scan } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { isValidEmail } from '../../utils/helpers';
@@ -10,7 +11,8 @@ import { SimpleFaceCapture, FaceDebugPanel } from '../../components/common';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login, authenticateWithTokens } = useAuth();
+  const { login, authenticateUser } = useAuth();
+
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);

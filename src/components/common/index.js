@@ -9,3 +9,5 @@ export { default as FaceCapture } from './FaceCapture';
 export { default as RealTimeFaceCapture } from './RealTimeFaceCapture';
 export { default as SimpleFaceCapture } from './SimpleFaceCapture';
 export { default as FaceDebugPanel } from './FaceDebugPanel';
+export { default as LocationPicker } from './LocationPicker';
+export { default as Chatbot } from './Chatbot';
