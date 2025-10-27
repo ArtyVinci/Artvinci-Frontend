@@ -139,11 +139,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Authenticate user after email verification
-  const authenticateVerifiedUser = (userData, tokens) => {
+  // Authenticate user with tokens (for face login, etc.)
+  const authenticateWithTokens = (userData, tokens) => {
     setUser(userData);
     setIsAuthenticated(true);
-    console.log('✅ User authenticated after email verification:', userData);
+    // Store tokens in localStorage
+    localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, tokens.access);
+    localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, tokens.refresh);
+    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userData));
+    console.log('✅ User authenticated with tokens:', userData);
   };
 
   // Update user profile
@@ -202,7 +206,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     updateUser,
-    authenticateVerifiedUser,
+    authenticateWithTokens,
     refreshUserProfile,
     updateProfile,
   };

@@ -13,6 +13,7 @@ import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
+import GoogleCallback from './pages/auth/GoogleCallback';
 import Gallery from './pages/gallery/Gallery';
 import Dashboard from './pages/dashboard/Dashboard';
 
@@ -106,6 +107,10 @@ function App() {
                     <ResetPassword />
                   </PublicRoute>
                 }
+              />
+              <Route
+                path="/auth/google/callback"
+                element={<GoogleCallback />}
               />
 
               {/* Protected Routes */}
