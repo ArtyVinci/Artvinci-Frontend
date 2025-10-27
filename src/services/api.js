@@ -646,4 +646,97 @@ export const eventService = {
   },
 };
 
+// Forum Services
+export const forumService = {
+  getCategories: async () => {
+    try {
+      const resp = await api.get('/forum/categories/');
+      return resp.data;
+    } catch (err) {
+      console.error('Get forum categories failed:', err);
+      throw err;
+    }
+  },
+
+  createCategory: async (payload) => {
+    try {
+      const resp = await api.post('/forum/categories/', payload);
+      return resp.data;
+    } catch (err) {
+      console.error('Create category failed:', err);
+      throw err;
+    }
+  },
+
+  getTopics: async (params = {}) => {
+    try {
+      const resp = await api.get('/forum/topics/', { params });
+      return resp.data;
+    } catch (err) {
+      console.error('Get topics failed:', err);
+      throw err;
+    }
+  },
+
+  createTopic: async (payload) => {
+    try {
+      const resp = await api.post('/forum/topics/', payload);
+      return resp.data;
+    } catch (err) {
+      console.error('Create topic failed:', err);
+      throw err;
+    }
+  },
+
+  getTopic: async (id) => {
+    try {
+      const resp = await api.get(`/forum/topics/${id}/`);
+      return resp.data;
+    } catch (err) {
+      console.error('Get topic failed:', err);
+      throw err;
+    }
+  },
+
+  createReply: async (topicId, payload) => {
+    try {
+      const resp = await api.post(`/forum/topics/${topicId}/replies/`, payload);
+      return resp.data;
+    } catch (err) {
+      console.error('Create reply failed:', err);
+      throw err;
+    }
+  },
+
+  deleteReply: async (replyId) => {
+    try {
+      const resp = await api.delete(`/forum/replies/${replyId}/`);
+      return resp.data;
+    } catch (err) {
+      console.error('Delete reply failed:', err);
+      throw err;
+    }
+  },
+  // Helpful voting
+  helpfulTopic: async (topicId) => {
+    try {
+      const resp = await api.post(`/forum/topics/${topicId}/helpful/`);
+      return resp.data;
+    } catch (err) {
+      console.error('Helpful topic failed:', err);
+      throw err;
+    }
+  },
+
+  helpfulReply: async (replyId) => {
+    try {
+      const resp = await api.post(`/forum/replies/${replyId}/helpful/`);
+      return resp.data;
+    } catch (err) {
+      console.error('Helpful reply failed:', err);
+      throw err;
+    }
+  },
+};
+
 export default api;
