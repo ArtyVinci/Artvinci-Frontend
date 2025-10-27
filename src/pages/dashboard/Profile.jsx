@@ -1,8 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Camera, Save, User, Mail, FileText, X, AlertCircle, Edit2, Loader, Palette, Briefcase, CheckCircle2 } from 'lucide-react';
+
+import { Camera, Save, User, Mail, FileText, X, AlertCircle, Edit2, Loader, Palette, Briefcase, CheckCircle2, Scan, Upload, Shield } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import showToast from '../../services/toast';
+import { SimpleFaceCapture } from '../../components/common';
+import api from '../../services/api';
+
 
 const Profile = () => {
   const { user, updateProfile, refreshUserProfile } = useAuth();
@@ -17,6 +21,8 @@ const Profile = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showFaceCapture, setShowFaceCapture] = useState(false);
+  const [faceRegistered, setFaceRegistered] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -28,6 +34,8 @@ const Profile = () => {
         bio: user.bio || '',
       });
       setImagePreview(user.profile_image_url || null);
+      // Check if user has face registered
+      setFaceRegistered(user.face_registered || false);
     }
   }, [user]);
 
@@ -122,6 +130,45 @@ const Profile = () => {
     });
     handleRemoveImage();
     setErrors({});
+  };
+
+  const handleFaceCapture = async (imageData) => {
+    try {
+      console.log('🎯 Starting face registration...');
+      const response = await api.post('/auth/face/register/', {
+        image: imageData
+      });
+
+      if (response.data) {
+        console.log('✅ Face registration response:', response.data);
+        setFaceRegistered(true);
+        showToast.success(response.data.message || 'Face registered successfully!');
+        setShowFaceCapture(false);
+        
+        // Refresh user profile to get updated data
+        await refreshUserProfile();
+      }
+    } catch (error) {
+      console.error('❌ Face registration error:', error);
+      console.error('❌ Error response:', error.response?.data);
+      
+      let errorMsg = 'Failed to register face';
+      
+      if (error.response?.data) {
+        if (typeof error.response.data === 'string') {
+          errorMsg = error.response.data;
+        } else if (error.response.data.error) {
+          errorMsg = error.response.data.error;
+        } else if (error.response.data.message) {
+          errorMsg = error.response.data.message;
+        }
+      } else if (error.message) {
+        errorMsg = error.message;
+      }
+      
+      showToast.error(errorMsg);
+      throw new Error(errorMsg);
+    }
   };
 
   const getRoleInfo = () => {
@@ -399,6 +446,74 @@ const Profile = () => {
             </p>
           </div>
         </div>
+
+        {/* Face Recognition Section */}
+        <div className="mt-6 pt-6 border-t border-[#e8e7e5] dark:border-[#4a4642]">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h4 className="font-semibold text-[#2d2a27] dark:text-[#fafaf9]">Face Recognition Login</h4>
+              <p className="text-sm text-[#9b9791] dark:text-[#9b9791] mt-1">
+                Register your face to enable quick login
+              </p>
+            </div>
+            {faceRegistered && (
+              <span className="px-3 py-1 bg-[#508978]/10 dark:bg-[#70a596]/10 text-[#508978] dark:text-[#70a596] text-xs font-medium rounded-full flex items-center gap-1">
+                <CheckCircle2 className="w-3 h-3" />
+                Registered
+              </span>
+            )}
+          </div>
+
+          {/* Simple Face Registration */}
+          <div className="space-y-4">
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              onClick={() => setShowFaceCapture(true)}
+              className="w-full py-4 bg-gradient-to-r from-[#6d2842] via-[#8b3654] to-[#a64d6d] hover:from-[#5a2338] hover:via-[#6d2842] hover:to-[#8b3654] text-white font-medium rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+            >
+              <Scan className="w-5 h-5" />
+              <span>{faceRegistered ? 'Update Face Recognition' : 'Register Face Recognition'}</span>
+            </motion.button>
+
+            {/* Info Box */}
+            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg">
+              <div className="flex items-start gap-3">
+                <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-blue-800 dark:text-blue-200">Secure Face Recognition</p>
+                  <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
+                    Your face data is stored securely and only used for login authentication. 
+                    You can update or remove it anytime.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-blue-800 dark:text-blue-200">Security Note</p>
+                  <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
+                    Webcam capture is secure and recommended for face login.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Face Capture Modal */}
+      {showFaceCapture && (
+        <SimpleFaceCapture
+          onCapture={handleFaceCapture}
+          onClose={() => setShowFaceCapture(false)}
+          isRegistering={true}
+          title="Register Your Face"
+        />
+      )}
+    </motion.div>
+    
       </motion.div>
     </motion.div>
   );

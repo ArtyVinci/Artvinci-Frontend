@@ -202,9 +202,10 @@ export const authService = {
   logout: async (refreshToken = null) => {
     try {
       // Try to blacklist the refresh token on the backend
-      // Note: Backend doesn't have logout endpoint yet, just clear locally
+
       if (refreshToken) {
-        // await api.post('/accounts/token/blacklist/', { refresh: refreshToken });
+        await api.post('/auth/logout/', { refresh: refreshToken });
+
       }
     } catch (error) {
       console.warn('Logout API call failed:', error.message);

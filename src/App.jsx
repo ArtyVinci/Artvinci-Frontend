@@ -15,12 +15,16 @@ import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
+
 import Gallery from './pages/gallery/Gallery';
 import Dashboard from './pages/dashboard/Dashboard';
 import EventsPage from './pages/events/EventsPage';
+import GoogleCallback from './pages/auth/GoogleCallback';
+import Gallery from './pages/gallery/Gallery';
 import EventDetailPage from './pages/events/EventDetailPage';
 import EventFormPage from './pages/events/EventFormPage';
 import EventAttendeesPage from './pages/events/EventAttendeesPage';
+
 
 // Scroll to Top Component
 const ScrollToTop = () => {
@@ -116,6 +120,10 @@ function App() {
                     <ResetPassword />
                   </PublicRoute>
                 }
+              />
+              <Route
+                path="/auth/google/callback"
+                element={<GoogleCallback />}
               />
 
               {/* Protected Event Routes */}

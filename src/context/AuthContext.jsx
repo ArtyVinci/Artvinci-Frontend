@@ -139,12 +139,25 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Authenticate user after email verification
-  const authenticateVerifiedUser = (userData, tokens) => {
+  // Authenticate user (used for both token-based and verified login)
+  const authenticateUser = (userData, tokens) => {
     setUser(userData);
     setIsAuthenticated(true);
-    console.log('✅ User authenticated after email verification:', userData);
+
+    if (tokens?.access && tokens?.refresh) {
+      // Store tokens in localStorage
+      localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, tokens.access);
+      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, tokens.refresh);
+      console.log('✅ User authenticated with tokens:', userData);
+    } else {
+      console.log('✅ User authenticated after email verification:', userData);
+    }
+
+    // Always persist user data
+    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userData));
   };
+
+ 
 
   // Update user profile
   const updateUser = (updatedUser) => {
@@ -202,7 +215,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     updateUser,
-    authenticateVerifiedUser,
+    authenticateUser,
     refreshUserProfile,
     updateProfile,
   };

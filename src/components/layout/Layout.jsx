@@ -1,5 +1,6 @@
 import Navbar from './Navbar';
 import Footer from './Footer';
+
 import { Chatbot } from '../common';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
@@ -10,6 +11,7 @@ const Layout = ({ children }) => {
   
   // Show chatbot only to visitors (non-artists or unauthenticated users)
   const showChatbot = !user || user.role !== 'artist';
+
   
   return (
     <div 

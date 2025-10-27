@@ -75,6 +75,21 @@ export const showToast = {
   },
 
   /**
+   * Show warning toast
+   * @param {string} message - Warning message to display
+   */
+  warning: (message) => {
+    toast(message, {
+      ...toastConfig,
+      icon: '⚠',
+      style: {
+        ...toastConfig.style,
+        borderLeft: '4px solid #f59e0b', // Orange for warnings
+      },
+    });
+  },
+
+  /**
    * Show loading toast with promise
    * @param {Promise} promise - Promise to track
    * @param {Object} messages - Success, error, and loading messages
