@@ -514,9 +514,9 @@ const Profile = () => {
       )}
     </motion.div>
     
-      </motion.div>
-    </motion.div>
+  
   );
 };
 
 export default Profile;
+
