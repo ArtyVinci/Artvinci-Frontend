@@ -38,6 +38,8 @@ export default function ForumPage() {
     loadData(selectedCategory);
   }, [selectedCategory]);
 
+  // No longer auto-open composer based on navigation state; navigation only
+
   const handleCategorySelect = (id) => {
     setSelectedCategory(id);
   };

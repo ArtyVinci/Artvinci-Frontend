@@ -4,10 +4,10 @@ import { showToast } from '../../services/toast';
 import { motion } from 'framer-motion';
 import { Send, X } from 'lucide-react';
 
-export default function TopicForm({ categories = [], onCreated, onCancel, hideHeader = false }) {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [category, setCategory] = useState(categories?.[0]?.id || '');
+export default function TopicForm({ categories = [], onCreated, onCancel, hideHeader = false, initialTitle = '', initialContent = '', initialCategory = '', topicId = null }) {
+  const [title, setTitle] = useState(initialTitle || '');
+  const [content, setContent] = useState(initialContent || '');
+  const [category, setCategory] = useState(initialCategory || categories?.[0]?.id || '');
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -35,18 +35,26 @@ export default function TopicForm({ categories = [], onCreated, onCancel, hideHe
 
     setLoading(true);
     try {
-      await forumService.createTopic({ title, content, category });
+      if (topicId) {
+        await forumService.updateTopic(topicId, { title, content, category });
+        showToast.success('Topic updated');
+      } else {
+        await forumService.createTopic({ title, content, category });
+        showToast.success('Topic created');
+      }
+
+      // clear form and notify parent
       setTitle('');
       setContent('');
-      showToast.success('Topic created');
       if (onCreated) onCreated();
     } catch (err) {
-      console.error('Failed to create topic', err);
-      const msg = err.response?.data?.message || err.response?.data?.error || err.response?.data || err.message || 'Failed to create topic';
+      console.error('Failed to save topic', err);
+      const msg = err.response?.data?.message || err.response?.data?.error || err.response?.data || err.message || 'Failed to save topic';
       showToast.error(typeof msg === 'string' ? msg : JSON.stringify(msg));
     } finally {
       setLoading(false);
     }
+
   };
 
   return (

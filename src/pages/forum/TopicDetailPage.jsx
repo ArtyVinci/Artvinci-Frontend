@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 import { forumService } from '../../services/api';
 import ReplyForm from '../../components/forum/ReplyForm';
+import Modal from '../../components/common/Modal';
+import { showToast } from '../../services/toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Clock, Tag, ThumbsUp, CornerUpLeft } from 'lucide-react';
 import { useRef } from 'react';
@@ -9,12 +12,18 @@ import { formatDistanceToNow } from 'date-fns';
 
 export default function TopicDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [topic, setTopic] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showFull, setShowFull] = useState(false);
   // Hooks must be called unconditionally and in the same order on every render
   const replyAreaId = 'reply-textarea';
   const replySectionRef = useRef(null);
+  // auth and modal state must be declared before any early returns to keep Hooks order stable
+  const { user, isAuthenticated } = useAuth();
+  const [replyToDelete, setReplyToDelete] = useState(null);
+  const [showReplyDeleteModal, setShowReplyDeleteModal] = useState(false);
+  const [showTopicDeleteModal, setShowTopicDeleteModal] = useState(false);
   
 
   const loadTopic = async () => {
@@ -109,6 +118,19 @@ export default function TopicDetailPage() {
     }
   };
 
+  const isOwner = () => {
+    try {
+      if (!user || !topic) return false;
+      // compare by id if available, fallback to username
+      return String(user.id) === String(topic.author?.id) || (user.username && topic.author?.username && user.username === topic.author.username);
+    } catch (e) { return false; }
+  };
+
+  const handleDeleteTopic = async () => {
+    // open topic delete modal
+    setShowTopicDeleteModal(true);
+  };
+
   const handleHelpfulTopic = async () => {
     try {
       const res = await forumService.helpfulTopic(id);
@@ -118,6 +140,36 @@ export default function TopicDetailPage() {
     }
   };
 
+  
+
+  const confirmDeleteReply = async () => {
+    if (!replyToDelete) return;
+    try {
+      await forumService.deleteReply(replyToDelete);
+      setTopic((t) => ({ ...t, replies: t.replies.filter(rr => rr.id !== replyToDelete) }));
+      setShowReplyDeleteModal(false);
+      setReplyToDelete(null);
+      showToast.success('Commentaire supprimé');
+    } catch (err) {
+      console.error('Failed to delete reply', err);
+      showToast.error('Impossible de supprimer le commentaire.');
+    }
+  };
+
+  const confirmDeleteTopic = async () => {
+    try {
+      await forumService.deleteTopic(id);
+      setShowTopicDeleteModal(false);
+      showToast.success('Sujet supprimé');
+      navigate('/forum');
+    } catch (err) {
+      console.error('Delete topic failed', err);
+      showToast.error('Impossible de supprimer le sujet.');
+    }
+  };
+
+
+
   return (
     <div className="container-custom py-12">
       <div className="max-w-4xl mx-auto">
@@ -126,11 +178,11 @@ export default function TopicDetailPage() {
             <h1 className="text-3xl font-extrabold">{topic.title}</h1>
             <div className="mt-1 text-sm text-gray-500">in <span className="capitalize">{topic.category?.name}</span></div>
           </div>
-          <div>
-            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="inline-flex items-center gap-2 px-3 py-2 border rounded text-sm">
-              <CornerUpLeft className="w-4 h-4" /> Write a post
-            </button>
-          </div>
+                  <div>
+                    <button onClick={() => navigate('/forum')} className="inline-flex items-center gap-2 px-3 py-2 border rounded text-sm">
+                      <CornerUpLeft className="w-4 h-4" /> Write a post
+                    </button>
+                  </div>
         </div>
 
         {/* Original post highlighted like forum examples (brand primary) */}
@@ -170,6 +222,12 @@ export default function TopicDetailPage() {
                 <button onClick={scrollToReply} className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800">
                   <CornerUpLeft className="w-4 h-4" /> Reply
                 </button>
+                {isOwner() && (
+                  <>
+                    <button onClick={() => navigate(`/forum/${id}/edit`)} className="inline-flex items-center gap-2 text-sm text-primary-600 hover:underline">Edit</button>
+                    <button onClick={handleDeleteTopic} className="inline-flex items-center gap-2 text-sm text-red-600 hover:underline">Delete</button>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -206,6 +264,11 @@ export default function TopicDetailPage() {
                         }} className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800">
                           <ThumbsUp className="w-4 h-4" /> Helpful ({r.helpful_count ?? 0})
                         </button>
+                        {user && String(user.id) === String(r.author?.id) && (
+                          <>
+                            <button onClick={() => { setReplyToDelete(r.id); setShowReplyDeleteModal(true); }} className="text-sm text-red-600 hover:underline ml-2">Delete</button>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -216,6 +279,37 @@ export default function TopicDetailPage() {
             <div className="text-gray-600">No replies yet.</div>
           )}
         </section>
+        {/* Reply deletion modal */}
+        <Modal
+          isOpen={showReplyDeleteModal}
+          onClose={() => { setShowReplyDeleteModal(false); setReplyToDelete(null); }}
+          title="Supprimer le commentaire ?"
+          footer={(
+            <>
+              <button onClick={() => { setShowReplyDeleteModal(false); setReplyToDelete(null); }} className="px-4 py-2 rounded-lg border mr-2">Annuler</button>
+              <button onClick={confirmDeleteReply} className="px-4 py-2 rounded-lg bg-red-600 text-white">Supprimer</button>
+            </>
+          )}
+          size="sm"
+        >
+          <p>Voulez-vous vraiment supprimer ce commentaire ? Cette action est irréversible.</p>
+        </Modal>
+
+        {/* Topic deletion modal */}
+        <Modal
+          isOpen={showTopicDeleteModal}
+          onClose={() => setShowTopicDeleteModal(false)}
+          title="Supprimer le sujet ?"
+          footer={(
+            <>
+              <button onClick={() => setShowTopicDeleteModal(false)} className="px-4 py-2 rounded-lg border mr-2">Annuler</button>
+              <button onClick={confirmDeleteTopic} className="px-4 py-2 rounded-lg bg-red-600 text-white">Supprimer</button>
+            </>
+          )}
+          size="sm"
+        >
+          <p>Voulez-vous vraiment supprimer ce sujet ? Cette action est irréversible.</p>
+        </Modal>
 
         <section>
           <h3 className="text-lg font-semibold mb-3">Add a reply</h3>

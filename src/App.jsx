@@ -18,6 +18,7 @@ import Home from "./pages/home/Home";
 import About from "./pages/home/About";
 import ForumPage from "./pages/forum/ForumPage";
 import TopicDetailPage from "./pages/forum/TopicDetailPage";
+import TopicEditPage from './pages/forum/TopicEditPage';
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import ForgotPassword from "./pages/auth/ForgotPassword";
@@ -227,6 +228,7 @@ function App() {
                 {/* Forum Routes */}
                 <Route path="/forum" element={<ForumPage />} />
                 <Route path="/forum/:id" element={<TopicDetailPage />} />
+                <Route path="/forum/:id/edit" element={<TopicEditPage />} />
 
                 {/* Protected Routes */}
                 <Route
