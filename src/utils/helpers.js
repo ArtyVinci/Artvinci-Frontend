@@ -1,10 +1,12 @@
 import { STORAGE_KEYS } from './constants';
 
-// Format price
-export const formatPrice = (price) => {
+// Format price with currency support
+export const formatPrice = (price, currency = 'USD') => {
+  if (price === undefined || price === null) return '$0.00';
+  
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: currency,
   }).format(price);
 };
 

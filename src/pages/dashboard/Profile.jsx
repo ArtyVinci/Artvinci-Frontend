@@ -735,8 +735,9 @@ const Profile = () => {
       )}
     </motion.div>
     
-   
+
   );
 };
 
 export default Profile;
+

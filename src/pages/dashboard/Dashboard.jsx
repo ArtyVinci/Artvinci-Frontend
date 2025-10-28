@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Link, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Link, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { User, Heart, ShoppingBag, Image as ImageIcon, Settings, Sparkles } from 'lucide-react';
+import { User, Heart, ShoppingBag, Image as ImageIcon, Settings, Sparkles, Plus } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { ELEGANT_COLORS } from '../../utils/elegantTheme';
 import Profile from './Profile';
+import MyArtworks from './MyArtworks';
+import ArtworkForm from './ArtworkForm';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -134,7 +136,9 @@ const Dashboard = () => {
               <Routes>
                 <Route index element={<Navigate to="profile" replace />} />
                 <Route path="profile" element={<Profile />} />
-                <Route path="artworks" element={<ArtworksSection />} />
+                <Route path="artworks" element={<MyArtworks />} />
+                <Route path="artworks/create" element={<ArtworkForm />} />
+                <Route path="artworks/edit/:slug" element={<ArtworkForm />} />
                 <Route path="favorites" element={<FavoritesSection />} />
                 <Route path="purchases" element={<PurchasesSection />} />
                 <Route path="settings" element={<SettingsSection />} />
@@ -146,32 +150,6 @@ const Dashboard = () => {
     </div>
   );
 };
-
-// Artworks Section
-const ArtworksSection = () => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-  >
-    <div className="flex items-center gap-3 mb-6">
-      <div className="p-3 bg-gradient-to-br from-[#b8862f] to-[#d4a343] rounded-2xl shadow-lg shadow-[#b8862f]/30">
-        <ImageIcon className="w-6 h-6 text-[#1a1816]" />
-      </div>
-      <h2 className="text-3xl font-bold text-[#2d2a27] dark:text-[#fafaf9]">My Artworks</h2>
-    </div>
-    <div className="bg-[#f5f5f3] dark:bg-gradient-to-br dark:from-[#3a3633] dark:to-[#2d2a27] rounded-2xl p-8 border border-[#e8e7e5] dark:border-[#4a4642]">
-      <div className="text-center py-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#b8862f]/20 to-[#d4a343]/20 rounded-full mb-4 shadow-inner">
-          <ImageIcon className="w-8 h-8 text-[#d4a343]" />
-        </div>
-        <p className="text-[#5d5955] dark:text-[#c4bfb9] text-lg">
-          Upload and manage your artworks here.
-        </p>
-        <p className="text-[#9b9791] dark:text-[#6d6762] mt-2">Feature coming soon!</p>
-      </div>
-    </div>
-  </motion.div>
-);
 
 // Favorites Section
 const FavoritesSection = () => (
