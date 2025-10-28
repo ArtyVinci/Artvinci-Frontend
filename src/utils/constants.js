@@ -40,15 +40,31 @@ export const API_ENDPOINTS = {
   MY_PURCHASES: '/dashboard/purchases/',
 };
 
-// Art Categories
+// Art Categories (matching backend)
 export const ART_CATEGORIES = [
-  { id: 'all', name: 'All', icon: '🎨' },
-  { id: 'painting', name: 'Painting', icon: '🖼️' },
-  { id: 'sculpture', name: 'Sculpture', icon: '🗿' },
-  { id: 'digital', name: 'Digital Art', icon: '💻' },
-  { id: 'photography', name: 'Photography', icon: '📷' },
-  { id: 'drawing', name: 'Drawing', icon: '✏️' },
-  { id: 'mixed-media', name: 'Mixed Media', icon: '🎭' },
+  { value: 'painting', label: 'Painting' },
+  { value: 'sculpture', label: 'Sculpture' },
+  { value: 'photography', label: 'Photography' },
+  { value: 'digital_art', label: 'Digital Art' },
+  { value: 'drawing', label: 'Drawing' },
+  { value: 'print', label: 'Print' },
+  { value: 'mixed_media', label: 'Mixed Media' },
+  { value: 'installation', label: 'Installation' },
+  { value: 'ceramics', label: 'Ceramics' },
+  { value: 'textile', label: 'Textile' },
+  { value: 'collage', label: 'Collage' },
+  { value: 'illustration', label: 'Illustration' },
+  { value: 'street_art', label: 'Street Art' },
+  { value: 'abstract', label: 'Abstract' },
+  { value: 'other', label: 'Other' },
+];
+
+// Currency Options
+export const CURRENCY_OPTIONS = [
+  { value: 'USD', label: 'USD ($)' },
+  { value: 'EUR', label: 'EUR (€)' },
+  { value: 'GBP', label: 'GBP (£)' },
+  { value: 'TND', label: 'TND (د.ت)' },
 ];
 
 // User Roles

@@ -17,10 +17,10 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 
 import Gallery from './pages/gallery/Gallery';
+import ArtworkDetail from './pages/gallery/ArtworkDetail';
 import Dashboard from './pages/dashboard/Dashboard';
 import EventsPage from './pages/events/EventsPage';
 import GoogleCallback from './pages/auth/GoogleCallback';
-import Gallery from './pages/gallery/Gallery';
 import EventDetailPage from './pages/events/EventDetailPage';
 import EventFormPage from './pages/events/EventFormPage';
 import EventAttendeesPage from './pages/events/EventAttendeesPage';
@@ -79,6 +79,7 @@ function App() {
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/gallery" element={<Gallery />} />
+              <Route path="/gallery/:slug" element={<ArtworkDetail />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<div className="container-custom py-20"><h1 className="text-4xl font-bold">Contact Page - Coming Soon</h1></div>} />
               <Route path="/store" element={<div className="container-custom py-20"><h1 className="text-4xl font-bold">Store Page - Coming Soon</h1></div>} />
