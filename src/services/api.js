@@ -352,18 +352,95 @@ export const userService = {
 
 // Artwork Services
 export const artworkService = {
+  /**
+   * Get all artworks with optional filters
+   * @param {Object} params - Query parameters
+   * @param {string} params.category - Filter by category
+   * @param {string} params.search - Search in title, description, tags
+   * @param {boolean} params.available - Filter by availability
+   * @param {string} params.artist - Filter by artist ID
+   * @param {number} params.min_price - Minimum price
+   * @param {number} params.max_price - Maximum price
+   * @param {boolean} params.is_featured - Filter featured artworks
+   * @param {string} params.sort - Sort option (newest, oldest, price_low, price_high, popular, views)
+   * @param {number} params.page - Page number
+   * @param {number} params.page_size - Items per page
+   * @returns {Promise} Paginated list of artworks
+   */
   getArtworks: async (params = {}) => {
     const response = await api.get('/artworks/', { params });
     return response.data;
   },
 
+  /**
+   * Get artwork by slug
+   * @param {string} slug - Artwork slug
+   * @returns {Promise} Artwork details
+   */
+  getArtworkBySlug: async (slug) => {
+    const response = await api.get(`/artworks/${slug}/`);
+    return response.data;
+  },
+
+  /**
+   * Get artwork by ID (legacy support)
+   * @param {string} id - Artwork ID
+   * @returns {Promise} Artwork details
+   */
   getArtworkById: async (id) => {
     const response = await api.get(`/artworks/${id}/`);
     return response.data;
   },
 
-  createArtwork: async (formData) => {
-    const response = await api.post('/artworks/', formData, {
+  /**
+   * Create new artwork (artists only)
+   * @param {Object} artworkData - Artwork data
+   * @returns {Promise} Created artwork
+   */
+  createArtwork: async (artworkData) => {
+    const response = await api.post('/artworks/', artworkData);
+    return response.data;
+  },
+
+  /**
+   * Update artwork (owner only)
+   * @param {string} slug - Artwork slug
+   * @param {Object} artworkData - Updated artwork data
+   * @returns {Promise} Updated artwork
+   */
+  updateArtwork: async (slug, artworkData) => {
+    const response = await api.patch(`/artworks/${slug}/`, artworkData);
+    return response.data;
+  },
+
+  /**
+   * Delete artwork (owner only)
+   * @param {string} slug - Artwork slug
+   * @returns {Promise} Deletion confirmation
+   */
+  deleteArtwork: async (slug) => {
+    const response = await api.delete(`/artworks/${slug}/`);
+    return response.data;
+  },
+
+  /**
+   * Toggle like/unlike artwork
+   * @param {string} slug - Artwork slug
+   * @returns {Promise} Like status
+   */
+  likeArtwork: async (slug) => {
+    const response = await api.post(`/artworks/${slug}/like/`);
+    return response.data;
+  },
+
+  /**
+   * Upload image to artwork
+   * @param {string} slug - Artwork slug
+   * @param {FormData} formData - Image file and metadata
+   * @returns {Promise} Upload confirmation
+   */
+  uploadImage: async (slug, formData) => {
+    const response = await api.post(`/artworks/${slug}/upload-image/`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -371,8 +448,19 @@ export const artworkService = {
     return response.data;
   },
 
-  updateArtwork: async (id, formData) => {
-    const response = await api.patch(`/artworks/${id}/`, formData, {
+  /**
+   * Upload multiple images to artwork
+   * @param {string} slug - Artwork slug
+   * @param {Array<File>} imageFiles - Array of image files
+   * @returns {Promise} Upload confirmation
+   */
+  uploadArtworkImages: async (slug, imageFiles) => {
+    const formData = new FormData();
+    imageFiles.forEach((file, index) => {
+      formData.append('images', file);
+    });
+    
+    const response = await api.post(`/artworks/${slug}/upload-image/`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -380,22 +468,74 @@ export const artworkService = {
     return response.data;
   },
 
-  deleteArtwork: async (id) => {
-    await api.delete(`/artworks/${id}/`);
-  },
-
-  likeArtwork: async (id) => {
-    const response = await api.post(`/artworks/${id}/like/`);
+  /**
+   * Get user's own artworks
+   * @returns {Promise} List of user's artworks
+   */
+  getMyArtworks: async () => {
+    const response = await api.get('/artworks/my/');
     return response.data;
   },
 
-  addComment: async (id, comment) => {
-    const response = await api.post(`/artworks/${id}/comments/`, { comment });
+  /**
+   * Purchase artwork
+   * @param {Object} purchaseData - { artwork_id, payment_method, transaction_id }
+   * @returns {Promise} Purchase confirmation
+   */
+  purchaseArtwork: async (purchaseData) => {
+    const response = await api.post('/artworks/purchase/', purchaseData);
     return response.data;
   },
 
-  getComments: async (id) => {
-    const response = await api.get(`/artworks/${id}/comments/`);
+  /**
+   * Get user's purchases
+   * @returns {Promise} List of purchases
+   */
+  getMyPurchases: async () => {
+    const response = await api.get('/artworks/purchases/my/');
+    return response.data;
+  },
+
+  /**
+   * Get artist's sales (artists only)
+   * @returns {Promise} List of sales
+   */
+  getMySales: async () => {
+    const response = await api.get('/artworks/sales/my/');
+    return response.data;
+  },
+
+  // ============================================================================
+  // AI FEATURES
+  // ============================================================================
+
+  /**
+   * Analyze artwork image using AI to detect style, colors, mood, tags
+   * @param {Object} data - { image_url: string, artwork_id?: string }
+   * @returns {Promise} AI analysis results with style, colors, tags, etc.
+   */
+  analyzeArtwork: async (data) => {
+    const response = await api.post('/artworks/ai/analyze/', data);
+    return response.data;
+  },
+
+  /**
+   * Get AI-generated tag suggestions based on title and description
+   * @param {Object} data - { title: string, description?: string }
+   * @returns {Promise} Array of suggested tags
+   */
+  suggestTags: async (data) => {
+    const response = await api.post('/artworks/ai/suggest-tags/', data);
+    return response.data;
+  },
+
+  /**
+   * Enhance or generate artwork description using AI
+   * @param {Object} data - { title: string, description?: string }
+   * @returns {Promise} Enhanced description
+   */
+  enhanceDescription: async (data) => {
+    const response = await api.post('/artworks/ai/enhance-description/', data);
     return response.data;
   },
 };
