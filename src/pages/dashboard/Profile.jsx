@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-import { Camera, Save, User, Mail, FileText, X, AlertCircle, Edit2, Loader, Palette, Briefcase, CheckCircle2, Scan, Upload, Shield } from 'lucide-react';
+import { Camera, Save, User, Mail, FileText, X, AlertCircle, Edit2, Loader, Palette, Briefcase, CheckCircle2, Scan, Upload, Shield, Sparkles, Wand2, Lightbulb } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import showToast from '../../services/toast';
 import { SimpleFaceCapture } from '../../components/common';
@@ -23,6 +23,10 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [showFaceCapture, setShowFaceCapture] = useState(false);
   const [faceRegistered, setFaceRegistered] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [generatedBio, setGeneratedBio] = useState('');
+  const [artworkAnalysis, setArtworkAnalysis] = useState(null);
+  const [recommendations, setRecommendations] = useState([]);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -168,6 +172,65 @@ const Profile = () => {
       
       showToast.error(errorMsg);
       throw new Error(errorMsg);
+    }
+  };
+
+  // AI Service Functions
+  const handleGenerateBio = async () => {
+    setAiLoading(true);
+    try {
+      const response = await api.post('/auth/ai/generate-bio/');
+      setGeneratedBio(response.data.bio);
+      showToast.success('AI-generated bio created successfully!');
+    } catch (error) {
+      console.error('Generate bio error:', error);
+      showToast.error('Failed to generate bio. Please try again.');
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const handleAnalyzeArtwork = async () => {
+    const title = prompt('Enter artwork title:');
+    if (!title) return;
+
+    const description = prompt('Enter artwork description (optional):');
+
+    setAiLoading(true);
+    try {
+      const response = await api.post('/auth/ai/analyze-artwork/', {
+        title: title,
+        description: description || ''
+      });
+      setArtworkAnalysis(response.data.analysis);
+      showToast.success('Artwork analyzed successfully!');
+    } catch (error) {
+      console.error('Analyze artwork error:', error);
+      showToast.error('Failed to analyze artwork. Please try again.');
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const handleGetRecommendations = async () => {
+    setAiLoading(true);
+    try {
+      const response = await api.get('/auth/ai/recommendations/');
+      setRecommendations(response.data.recommendations);
+      showToast.success('Personalized recommendations generated!');
+    } catch (error) {
+      console.error('Get recommendations error:', error);
+      showToast.error('Failed to get recommendations. Please try again.');
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const handleApplyGeneratedBio = () => {
+    if (generatedBio) {
+      setFormData(prev => ({ ...prev, bio: generatedBio }));
+      setGeneratedBio('');
+      showToast.success('Bio applied to your profile!');
     }
   };
 
@@ -503,6 +566,164 @@ const Profile = () => {
         </div>
       </motion.div>
 
+      {/* AI Assistant Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="mt-6 bg-[#f5f5f3] dark:bg-gradient-to-br dark:from-[#3a3633] dark:to-[#2d2a27] backdrop-blur-xl rounded-2xl p-6 border border-[#e8e7e5] dark:border-[#4a4642] shadow-lg"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h4 className="font-semibold text-[#2d2a27] dark:text-[#fafaf9]">AI Assistant</h4>
+            <p className="text-sm text-[#9b9791] dark:text-[#9b9791] mt-1">
+              Get AI-powered help with your profile and artwork
+            </p>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-[#b8862f] to-[#d4a343] text-[#1a1816] text-xs font-medium rounded-full">
+            <Sparkles className="w-3 h-3" />
+            Powered by Gemini AI
+          </div>
+        </div>
+
+        {/* AI Features */}
+        <div className="space-y-4">
+          {/* Generate Bio */}
+          <div className="flex gap-3">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleGenerateBio}
+              disabled={aiLoading}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#6d2842] to-[#a64d6d] hover:from-[#5a2338] hover:to-[#8b3654] text-white font-medium rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {aiLoading ? (
+                <Loader className="w-4 h-4 animate-spin" />
+              ) : (
+                <Wand2 className="w-4 h-4" />
+              )}
+              Generate Bio
+            </motion.button>
+
+            {generatedBio && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                onClick={handleApplyGeneratedBio}
+                className="px-4 py-3 bg-[#508978] hover:bg-[#70a596] text-white font-medium rounded-xl shadow-md hover:shadow-lg transition-all"
+              >
+                Apply
+              </motion.button>
+            )}
+          </div>
+
+          {/* Generated Bio Display */}
+          {generatedBio && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 bg-[#e8e7e5] dark:bg-[#1a1816] rounded-xl border border-[#d4d2ce] dark:border-[#4a4642]"
+            >
+              <p className="text-sm text-[#2d2a27] dark:text-[#fafaf9] italic">"{generatedBio}"</p>
+            </motion.div>
+          )}
+
+          {/* Analyze Artwork */}
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleAnalyzeArtwork}
+            disabled={aiLoading}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#508978] to-[#70a596] hover:from-[#3a5a4a] hover:to-[#508978] text-white font-medium rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {aiLoading ? (
+              <Loader className="w-4 h-4 animate-spin" />
+            ) : (
+              <Palette className="w-4 h-4" />
+            )}
+            Analyze Artwork
+          </motion.button>
+
+          {/* Artwork Analysis Display */}
+          {artworkAnalysis && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 bg-[#e8e7e5] dark:bg-[#1a1816] rounded-xl border border-[#d4d2ce] dark:border-[#4a4642] space-y-3"
+            >
+              <div>
+                <h5 className="font-medium text-[#2d2a27] dark:text-[#fafaf9] mb-1">Description:</h5>
+                <p className="text-sm text-[#5d5955] dark:text-[#c4bfb9]">{artworkAnalysis.description}</p>
+              </div>
+              <div>
+                <h5 className="font-medium text-[#2d2a27] dark:text-[#fafaf9] mb-1">Tags:</h5>
+                <div className="flex flex-wrap gap-2">
+                  {artworkAnalysis.tags.map((tag, index) => (
+                    <span key={index} className="px-2 py-1 bg-[#6d2842]/10 dark:bg-[#a64d6d]/10 text-[#6d2842] dark:text-[#a64d6d] text-xs rounded-full">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h5 className="font-medium text-[#2d2a27] dark:text-[#fafaf9] mb-1">Style:</h5>
+                <span className="px-2 py-1 bg-[#b8862f]/10 dark:bg-[#d4a343]/10 text-[#b8862f] dark:text-[#d4a343] text-xs font-medium rounded-full">
+                  {artworkAnalysis.style}
+                </span>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Get Recommendations */}
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleGetRecommendations}
+            disabled={aiLoading}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#b8862f] to-[#d4a343] hover:from-[#a0712a] hover:to-[#b8862f] text-[#1a1816] font-medium rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {aiLoading ? (
+              <Loader className="w-4 h-4 animate-spin" />
+            ) : (
+              <Lightbulb className="w-4 h-4" />
+            )}
+            Get Recommendations
+          </motion.button>
+
+          {/* Recommendations Display */}
+          {recommendations.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 bg-[#e8e7e5] dark:bg-[#1a1816] rounded-xl border border-[#d4d2ce] dark:border-[#4a4642]"
+            >
+              <h5 className="font-medium text-[#2d2a27] dark:text-[#fafaf9] mb-3">Personalized Recommendations:</h5>
+              <ul className="space-y-2">
+                {recommendations.map((rec, index) => (
+                  <li key={index} className="text-sm text-[#5d5955] dark:text-[#c4bfb9] flex items-start gap-2">
+                    <span className="text-[#6d2842] dark:text-[#a64d6d] font-medium">{index + 1}.</span>
+                    <span>{rec}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+
+          {/* AI Info Box */}
+          <div className="p-4 bg-gradient-to-r from-[#6d2842]/10 to-[#a64d6d]/10 dark:from-[#6d2842]/20 dark:to-[#a64d6d]/20 border border-[#6d2842]/20 dark:border-[#a64d6d]/30 rounded-lg">
+            <div className="flex items-start gap-3">
+              <Sparkles className="w-5 h-5 text-[#6d2842] dark:text-[#a64d6d] mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-[#6d2842] dark:text-[#a64d6d]">AI-Powered Features</p>
+                <p className="text-sm text-[#5d5955] dark:text-[#c4bfb9] mt-1">
+                  Generate personalized bios, analyze your artwork with professional insights, and discover new art recommendations tailored to your interests.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Face Capture Modal */}
       {showFaceCapture && (
         <SimpleFaceCapture
@@ -514,8 +735,7 @@ const Profile = () => {
       )}
     </motion.div>
     
-      </motion.div>
-    </motion.div>
+   
   );
 };
 

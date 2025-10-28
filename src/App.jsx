@@ -20,7 +20,6 @@ import Gallery from './pages/gallery/Gallery';
 import Dashboard from './pages/dashboard/Dashboard';
 import EventsPage from './pages/events/EventsPage';
 import GoogleCallback from './pages/auth/GoogleCallback';
-import Gallery from './pages/gallery/Gallery';
 import EventDetailPage from './pages/events/EventDetailPage';
 import EventFormPage from './pages/events/EventFormPage';
 import EventAttendeesPage from './pages/events/EventAttendeesPage';
