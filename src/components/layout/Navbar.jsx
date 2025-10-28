@@ -1,10 +1,22 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Menu, X, Palette, Sun, Moon, User, LogOut, Heart, ShoppingBag, Settings } from 'lucide-react';
-import { useAuth } from '../../hooks/useAuth';
-import { useTheme } from '../../hooks/useTheme';
-import Button from '../common/Button';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  Menu,
+  X,
+  Palette,
+  Sun,
+  Moon,
+  User,
+  LogOut,
+  Heart,
+  ShoppingBag,
+  Settings,
+} from "lucide-react";
+import { useAuth } from "../../hooks/useAuth";
+import { useTheme } from "../../hooks/useTheme";
+import Button from "../common/Button";
+import CartIcon from "../common/CartIcon";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,18 +27,19 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
     setIsProfileOpen(false);
   };
 
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Gallery', path: '/gallery' },
-    { name: 'Events', path: '/events' },
-    { name: 'Forum', path: '/forum' },
-    { name: 'Store', path: '/store' },
-    { name: 'Artists', path: '/artists' },
-    { name: 'About', path: '/about' },
+    { name: "Home", path: "/" },
+    { name: "Gallery", path: "/gallery" },
+    { name: "AI Art", path: "/ai-art" },
+    { name: "Events", path: "/events" },
+    { name: "Forum", path: "/forum" },
+    { name: "Store", path: "/store" },
+    { name: "Artists", path: "/artists" },
+    { name: "About", path: "/about" },
   ];
 
   return (
@@ -58,6 +71,9 @@ const Navbar = () => {
 
           {/* Right Side Actions */}
           <div className="hidden md:flex items-center gap-4">
+            {/* Cart Icon */}
+            <CartIcon />
+
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
@@ -78,14 +94,18 @@ const Navbar = () => {
                   className="flex items-center gap-2 p-1 rounded-xl hover:bg-[#f5f5f3] dark:hover:bg-[#383530] transition-all duration-200 hover:scale-105"
                 >
                   {user?.profile_image ? (
-                    <img 
-                      src={user.profile_image} 
-                      alt={user?.username || 'Profile'}
+                    <img
+                      src={user.profile_image}
+                      alt={user?.username || "Profile"}
                       className="w-10 h-10 rounded-xl object-cover shadow-md hover:shadow-lg transition-all duration-200 ring-2 ring-white dark:ring-[#2d2a27]"
                     />
                   ) : (
                     <div className="w-10 h-10 bg-gradient-to-br from-[#6d2842] to-[#a64d6d] rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md hover:shadow-lg transition-all duration-200 ring-2 ring-white dark:ring-[#2d2a27]">
-                      {(user?.first_name?.charAt(0) || user?.username?.charAt(0) || 'U').toUpperCase()}
+                      {(
+                        user?.first_name?.charAt(0) ||
+                        user?.username?.charAt(0) ||
+                        "U"
+                      ).toUpperCase()}
                     </div>
                   )}
                 </button>
@@ -100,30 +120,32 @@ const Navbar = () => {
                     <div className="px-5 py-4 bg-gradient-to-r from-[#6d2842] via-[#8b3654] to-[#a64d6d] text-white">
                       <div className="flex items-center gap-3 mb-2">
                         {user?.profile_image ? (
-                          <img 
-                            src={user.profile_image} 
-                            alt={user?.username || 'Profile'}
+                          <img
+                            src={user.profile_image}
+                            alt={user?.username || "Profile"}
                             className="w-12 h-12 rounded-xl object-cover ring-2 ring-white/30 shadow-lg"
                           />
                         ) : (
                           <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-white font-bold text-xl ring-2 ring-white/30">
-                            {(user?.first_name?.charAt(0) || user?.username?.charAt(0) || 'U').toUpperCase()}
+                            {(
+                              user?.first_name?.charAt(0) ||
+                              user?.username?.charAt(0) ||
+                              "U"
+                            ).toUpperCase()}
                           </div>
                         )}
                         <div className="flex-1">
                           <p className="text-sm font-bold">
-                            {user?.first_name && user?.last_name 
-                              ? `${user.first_name} ${user.last_name}` 
+                            {user?.first_name && user?.last_name
+                              ? `${user.first_name} ${user.last_name}`
                               : user?.username}
                           </p>
-                          <p className="text-xs opacity-90">
-                            {user?.email}
-                          </p>
+                          <p className="text-xs opacity-90">{user?.email}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 mt-3">
                         <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-medium capitalize">
-                          {user?.role || 'User'}
+                          {user?.role || "User"}
                         </span>
                       </div>
                     </div>
@@ -165,7 +187,7 @@ const Navbar = () => {
                         <span className="font-medium">Settings</span>
                       </Link>
                       {/* Manage Forum - visible to admin or artist roles */}
-                      {(user?.role === 'admin' || user?.role === 'artist') && (
+                      {(user?.role === "admin" || user?.role === "artist") && (
                         <Link
                           to="/forum/manage"
                           className="flex items-center gap-3 px-5 py-3 hover:bg-[#f5f5f3] dark:hover:bg-[#1a1816] transition-colors text-[#5d5955] dark:text-[#c4bfb9] hover:text-[#6d2842] dark:hover:text-[#d4a343]"
@@ -230,7 +252,7 @@ const Navbar = () => {
         {isMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden py-4 border-t border-[#e8e7e5] dark:border-[#4a4642]"
           >
