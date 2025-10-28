@@ -7,7 +7,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { isValidEmail } from '../../utils/helpers';
 import showToast from '../../services/toast';
 import api from '../../services/api';
-import { SimpleFaceCapture, FaceDebugPanel } from '../../components/common';
+import { SimpleFaceCapture } from '../../components/common';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -100,7 +100,7 @@ const Login = () => {
         const { user, tokens, message, match_info } = response.data;
         
         // Authenticate user with tokens using auth context
-        authenticateWithTokens(user, tokens);
+        authenticateUser(user, tokens);
         
         console.log('✅ Face login successful:', match_info);
         
@@ -320,8 +320,6 @@ const Login = () => {
         />
       )}
 
-      {/* Debug Panel */}
-      <FaceDebugPanel />
     </div>
   );
 };
